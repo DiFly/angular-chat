@@ -1,7 +1,7 @@
 import { User } from './../model/user';
 import { Message } from './../model/message';
 import { Subject, Observable, from } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, scan } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Thread } from '../model/thread';
 
@@ -10,8 +10,21 @@ import { Thread } from '../model/thread';
 })
 export class MessagesService {
   newMessages: Subject<Message> = new Subject<Message>();
+  messages: Observable<Message[]>;
+  updates: Subject<any> = new Subject<any>();
 
-  constructor() { }
+  constructor() {
+    this.messages = this.updates.pipe(
+      scan((
+        messages: Message[],
+        operation: IMessagesOperation) => {
+        return operation(messages);
+        },
+        initialMessages
+      )
+    )
+
+  }
 
   addMessage(message: Message): void {
     this.newMessages.next(message);
@@ -25,4 +38,8 @@ export class MessagesService {
         })
       )
   }
+}
+
+interface IMessagesOperation extends Function {
+  (messages: Message[]): Message[];
 }
