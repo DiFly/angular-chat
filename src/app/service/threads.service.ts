@@ -4,6 +4,7 @@ import { MessagesService } from './messages.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Thread } from '../model/thread';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
