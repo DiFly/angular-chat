@@ -1,9 +1,11 @@
 import { User } from './../model/user';
 import { Message } from './../model/message';
 import { Subject, Observable, from } from 'rxjs';
-import { filter, scan } from 'rxjs/operators';
+import { filter, scan, publishReplay, refCount, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Thread } from '../model/thread';
+
+const initialMessages: Message[] = [];
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,8 @@ export class MessagesService {
   newMessages: Subject<Message> = new Subject<Message>();
   messages: Observable<Message[]>;
   updates: Subject<any> = new Subject<any>();
+  create: Subject<Message> = new Subject<Message>();
+  markThreadAsRead: Subject<any> = new Subject<any>();
 
   constructor() {
     this.messages = this.updates.pipe(
@@ -21,9 +25,33 @@ export class MessagesService {
         return operation(messages);
         },
         initialMessages
-      )
-    )
+      ),
+      publishReplay(1),
+      refCount()
+    );
 
+    this.create.pipe(
+      map( function(message: Message): IMessagesOperation {
+        return (messages: Message[]) => {
+          return messages.concat(message);
+        };
+      })
+    ).subscribe(this.updates);
+
+    this.newMessages.subscribe(this.create);
+
+    this.markThreadAsRead.pipe(
+      map((thread: Thread) => {
+        return (messages: Message[]) => {
+          return messages.map( (message: Message) => {
+            if(message.thread.id === thread.id) {
+              message.isRead = true;
+            }
+            return message;
+          })
+        }
+      })
+    ).subscribe(this.updates);
   }
 
   addMessage(message: Message): void {
@@ -43,3 +71,7 @@ export class MessagesService {
 interface IMessagesOperation extends Function {
   (messages: Message[]): Message[];
 }
+
+export const messagesServiceInjectables: Array<any> = [
+  MessagesService
+];
