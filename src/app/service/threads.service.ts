@@ -1,7 +1,7 @@
 import { Message } from './../model/message';
 import { map } from 'rxjs/operators';
 import { MessagesService } from './messages.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Thread } from '../model/thread';
 import * as _ from 'lodash';
@@ -11,6 +11,8 @@ import * as _ from 'lodash';
 })
 export class ThreadsService {
   threads: Observable<{ [key: string]: Thread }>;
+  orderedThreads: Observable<Thread[]>;
+  currentThread: Subject<Thread> = new BehaviorSubject<Thread>(new Thread());
 
   constructor(private messagesService: MessagesService) {
     this.threads = this.messagesService.messages.pipe(
@@ -27,6 +29,13 @@ export class ThreadsService {
         });
 
         return threads;
+      })
+    );
+
+    this.orderedThreads = this.threads.pipe(
+      map((threadGroups: { [key: string]: Thread }) => {
+        const threads: Thread[] = _.values(threadGroups);
+        return _.sortBy(threads, (t: Thread) => t.lastMessage.sentAt).reverse();
       })
     );
    }
