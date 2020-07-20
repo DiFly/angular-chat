@@ -1,5 +1,5 @@
 import { Message } from './../model/message';
-import { map } from 'rxjs/operators';
+import { map, combineLatest, filter } from 'rxjs/operators';
 import { MessagesService } from './messages.service';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -13,6 +13,7 @@ export class ThreadsService {
   threads: Observable<{ [key: string]: Thread }>;
   orderedThreads: Observable<Thread[]>;
   currentThread: Subject<Thread> = new BehaviorSubject<Thread>(new Thread());
+  currentThreadMessages: Observable<Message[]>;
 
   constructor(private messagesService: MessagesService) {
     this.threads = this.messagesService.messages.pipe(
@@ -38,5 +39,32 @@ export class ThreadsService {
         return _.sortBy(threads, (t: Thread) => t.lastMessage.sentAt).reverse();
       })
     );
+
+    this.currentThreadMessages = this.currentThread.pipe(
+      combineLatest(messagesService.messages,
+        (currentThread: Thread, messages: Message[]) => {
+          if(currentThread && messages.length > 0) {
+            return _.chain(messages)
+              .filter((message: Message) => (message.thread.id === currentThread.id))
+              .map((message: Message) => {
+                message.isRead = true;
+                return message;
+              });
+          } else {
+            return [];
+          }
+        })
+    );
+
+    this.currentThread.subscribe(this.messagesService.markThreadAsRead);
+   }
+
+   setCurrentThread(newThread: Thread ): void {
+     this.currentThread.next(newThread);
    }
 }
+
+
+export const threadServiceInjectables: Array<any> = [
+  ThreadsService
+];
