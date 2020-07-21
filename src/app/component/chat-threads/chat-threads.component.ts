@@ -12,7 +12,9 @@ export class ChatThreadsComponent implements OnInit {
 
   constructor(
     public threadsService: ThreadsService
-  ) { }
+  ) {
+    this.threads = threadsService.orderedThreads;
+  }
 
   ngOnInit(): void {
   }
