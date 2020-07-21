@@ -1,3 +1,6 @@
+import { UserService } from './service/user.service';
+import { ThreadsService } from './service/threads.service';
+import { MessagesService } from './service/messages.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +9,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular-chat';
+  constructor(
+    public messagesService: MessagesService,
+    public threadSerice: ThreadsService,
+    public userService: UserService
+    ){
+
+  }
 }

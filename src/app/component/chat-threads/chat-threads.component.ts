@@ -1,3 +1,5 @@
+import { ThreadsService } from './../../service/threads.service';
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-threads.component.scss']
 })
 export class ChatThreadsComponent implements OnInit {
+  threads: Observable<any>;
 
-  constructor() { }
+  constructor(
+    public threadsService: ThreadsService
+  ) { }
 
   ngOnInit(): void {
   }
