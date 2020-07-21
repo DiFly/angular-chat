@@ -49,7 +49,8 @@ export class ThreadsService {
               .map((message: Message) => {
                 message.isRead = true;
                 return message;
-              });
+              })
+              .value();
           } else {
             return [];
           }
@@ -63,7 +64,6 @@ export class ThreadsService {
      this.currentThread.next(newThread);
    }
 }
-
 
 export const threadServiceInjectables: Array<any> = [
   ThreadsService
