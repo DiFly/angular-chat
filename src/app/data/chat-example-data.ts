@@ -65,7 +65,49 @@ export class ChatExampleData {
     static setupBots(
         messagesService: MessagesService
     ): void {
+      messagesService.messagesForThreadUser(tEcho, echo)
+      .forEach((message: Message): void => {
+        messagesService.addMessage(
+          new Message({
+            author: echo,
+            text: message.text,
+            thread: tEcho
+          })
+        );
+      }, null);
 
+      messagesService.messagesForThreadUser(tRev, rev)
+      .forEach( (message: Message): void => {
+        messagesService.addMessage(
+          new Message({
+            author: rev,
+            text: message.text.split('').reverse().join(''),
+            thread: tRev
+          })
+        );
+      }, null);
+
+      messagesService.messagesForThreadUser(tWait, wait)
+      .forEach( (message: Message): void => {
+        let waitTime: number = parseInt(message.text, 10);
+        let reply: string;
+
+        if( isNaN(waitTime)) {
+          waitTime = 0;
+          reply = `I didn't understand ${message.text}. Try sending me a number.`;
+        } else {
+          reply = `I waited ${message.text} seconds to send to you this.`;
+        }
+
+        setTimeout( () => {
+          messagesService.addMessage(
+            new Message({
+              author: wait,
+              text: reply,
+              thread: tWait
+            })
+          )
+        }, waitTime * 1000 )
+      }, null)
     };
 }
-
