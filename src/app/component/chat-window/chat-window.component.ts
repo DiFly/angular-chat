@@ -31,4 +31,13 @@ export class ChatWindowComponent implements OnInit {
     this.draftMessage = new Message;
   }
 
+  sendMessage(): void {
+    const m: Message = this.draftMessage;
+    m.author = this.currentUser;
+    m.thread = this.currentThread;
+    m.isRead = true;
+    this.messagesService.addMessage(m);
+    this.draftMessage = new Message();
+  }
+
 }
