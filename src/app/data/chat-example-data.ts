@@ -7,11 +7,11 @@ import { Message } from './../model/message';
 import { Thread } from './../model/thread';
 import { User } from './../model/user';
 
-const me: User = new User('Mary', 'https://picsum.photos/143/143');
+const me: User = new User('Mary', 'https://i.picsum.photos/id/674/143/143.jpg?hmac=kgkxoiJJ_TQXhL5FiK5aTkNIlL2hm3pEYI1nW6NaMuE');
 const ladycap: User = new User('Lady Star', 'https://picsum.photos/143/143');
-const echo: User = new User('Echo Bot', 'https://picsum.photos/143/143');
-const rev: User = new User('Reverse Bot', 'https://picsum.photos/143/143');
-const wait: User = new User('Waiting Bot', 'https://picsum.photos/143/143');
+const echo: User = new User('Echo Bot', 'https://i.picsum.photos/id/228/143/143.jpg?hmac=hVi6pGzBip6kfs0yIcgD1eG25AW1Av6Z7l1auFxQSXw');
+const rev: User = new User('Reverse Bot', 'https://i.picsum.photos/id/847/143/143.jpg?hmac=DaJ9YFlqhE1Iy50ApAoPoMH7c3BUYfPMdJe_Fo4oe24');
+const wait: User = new User('Waiting Bot', 'https://i.picsum.photos/id/341/143/143.jpg?hmac=llz5pfMVowrKHb8K1vZEEBIWTi-4RP4SIov5pTl0wkU');
 
 const tLadycap: Thread = new Thread('tLadycap', ladycap.name, ladycap.avatarSrc);
 const tEcho: Thread = new Thread('tEcho', echo.name, echo.avatarSrc);
