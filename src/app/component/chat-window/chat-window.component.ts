@@ -52,4 +52,14 @@ export class ChatWindowComponent implements OnInit {
     this.draftMessage = new Message();
   }
 
+  onEnter(event: any): void {
+    this.sendMessage();
+    event.preventDefault();
+  }
+
+  scrolButton(): void {
+    const scrollPane: any = this.el.nativeElement.querySelector('.msg-container-base');
+    scrollPane.scrollTop = scrollPane.scrollHeight;
+  }
+
 }
