@@ -6,13 +6,12 @@ import { Subject, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  currentUser: Subject <User> = new BehaviorSubject<User>(null);
+  currentUser: Subject<User> = new BehaviorSubject<User>(null);
 
   constructor() { }
 
   public setCurrentUser( newUser: User ): void {
-    // @ts-ignore
-    this.setCurrentUser.next(newUser);
+    this.currentUser.next(newUser);
   }
 }
 
