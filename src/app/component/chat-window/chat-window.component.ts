@@ -41,6 +41,14 @@ export class ChatWindowComponent implements OnInit {
         this.currentUser = user;
       }
     );
+
+    this.messages.subscribe(
+      (messages: Array<Message>) => {
+        setTimeout(() => {
+          this.scrolToButton();
+        })
+      }
+    );
   }
 
   sendMessage(): void {
@@ -57,7 +65,7 @@ export class ChatWindowComponent implements OnInit {
     event.preventDefault();
   }
 
-  scrolButton(): void {
+  scrolToButton(): void {
     const scrollPane: any = this.el.nativeElement.querySelector('.msg-container-base');
     scrollPane.scrollTop = scrollPane.scrollHeight;
   }
