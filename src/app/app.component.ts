@@ -1,3 +1,4 @@
+import { ChatExampleData } from './data/chat-example-data';
 import { UserService } from './service/user.service';
 import { ThreadsService } from './service/threads.service';
 import { MessagesService } from './service/messages.service';
@@ -14,6 +15,6 @@ export class AppComponent {
     public threadSerice: ThreadsService,
     public userService: UserService
     ){
-
+    ChatExampleData.init(messagesService, threadSerice, userService);
   }
 }
