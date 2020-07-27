@@ -1,15 +1,17 @@
-<p>chat-thread works!</p>
-
-<div class="media conversation">
-  <div class="pull-left">
-    <img class="media-onbject avatar"
+<div class="row g-0">
+  <div class="col-md-4">
+    <img class="card-img-top"
      src="{{thread.avatarSrc}}">
   </div>
-  <div class="media-body">
-    <h5 class="media-heading contact-name">
+  <div class="col row">
+    <h5 class="card-header">
       {{thread.name}} <span *ngIf='selected'>&bull;</span>
     </h5>
-    <small class="message-preview">{{thread.lastMessage.text}}</small>
+    <div class="card-body">
+      <small class="card-text">{{thread.lastMessage.text}}</small>
+    </div>
+    <div class="card-footer">
+      <a (click)="clicked($event)" class="nav-link">Select</a>
+    </div>
   </div>
-  <a (click)="clicked($event)" class="div-link">Select</a>
 </div>
